@@ -7,6 +7,7 @@ namespace Bloom
 {
 	public partial class MainForm : Form
 	{
+		// Helper getters.
 		public string InputFile => textBoxInputFile.Text;
 		public int FilterSize => (int)numericUpDownSize.Value;
 		public int HashCount => (int)numericUpDownHashCount.Value;
@@ -32,13 +33,16 @@ namespace Bloom
 				return;
 			}
 
+			// Create a filter and add all lines from the input file.
 			var bloomFilter = new BloomFilter<string>(FilterSize, HashCount);
 			bloomFilter.AddRange(File.ReadAllLines(InputFile));
 
+			// Check each line from the text box against the filter.
 			var result = new StringBuilder();
 			foreach (string value in textBoxValues.Lines)
 				result.AppendLine($"{value}: {bloomFilter[value]}");
 
+			// Show the results.
 			MessageBox.Show(result.ToString(), "Results");
 		}
 	}
